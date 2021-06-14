@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 
     const payload = jwt.verify(token, process.env.SECRET);
 
-    console.log(payload);
+    req.user = payload.user;
   } catch (err) {
     console.log(err.message);
     return res.status(403).json('Not authorized');

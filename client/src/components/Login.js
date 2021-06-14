@@ -3,6 +3,7 @@ import axios from 'axios';
 import api from '../api/api';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFalse, setTrue } from '../redux/authSlice';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,6 @@ const Login = () => {
           password,
         },
       });
-      console.log(response.data.token);
 
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
@@ -65,6 +65,7 @@ const Login = () => {
           </button>
         </div>
       </form>
+      <Link to='/register'>Register</Link>
     </>
   );
 };

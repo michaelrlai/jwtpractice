@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setTrue } from '../redux/authSlice';
+import api from '../api/api';
 
 const Register = () => {
+  const dispatch = useDispatch();
+
   const [inputs, setInputs] = useState({
     name: '',
     email: '',
@@ -18,6 +24,21 @@ const Register = () => {
     e.preventDefault();
 
     try {
+      console.log('hi');
+      const response = await api({
+        method: 'POST',
+        url: '/auth/register',
+        data: {
+          name,
+          email,
+          password,
+        },
+      });
+
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        dispatch(setTrue());
+      }
     } catch (err) {
       console.log(err.message);
     }
@@ -54,6 +75,7 @@ const Register = () => {
           </button>
         </div>
       </form>
+      <Link to='/login'>Login</Link>
     </>
   );
 };

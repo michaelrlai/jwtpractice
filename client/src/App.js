@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,11 +9,11 @@ import {
 import './App.css';
 import Login from './components/Login';
 import Register from './components/Register';
-import { useSelector } from 'react-redux';
+
 import Dashboard from './components/Dashboard';
 import api from './api/api';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+
+import { useDispatch, useSelector } from 'react-redux';
 import { setTrue, setFalse } from './redux/authSlice';
 
 const App = () => {
@@ -36,7 +36,7 @@ const App = () => {
 
   useEffect(() => {
     isAuth();
-  });
+  }, []);
 
   return (
     <div className='container-fluid'>
@@ -45,10 +45,13 @@ const App = () => {
           <Router>
             <Switch>
               <Route exact path='/login'>
-                {!auth ? <Login /> : <Dashboard />}
+                {!auth ? <Login /> : <Redirect to='/dashboard' />}
               </Route>
               <Route exact path='/register'>
-                <Register />
+                {!auth ? <Register /> : <Redirect to='/dashboard' />}
+              </Route>
+              <Route exact path='/dashboard'>
+                {auth ? <Dashboard /> : <Redirect to='/login' />}
               </Route>
             </Switch>
           </Router>
